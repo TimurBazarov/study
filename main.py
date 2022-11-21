@@ -2,19 +2,19 @@ import sys
 
 from PyQt5.QtWidgets import QWidget, QApplication
 from PyQt5.QtGui import QPainter, QColor
-from random import randint
-from PyQt5 import uic
+from random import randint, choices
+from UI import Ui_Form
 
 
-class Example(QWidget):
+class Example(QWidget, Ui_Form):
     def __init__(self):
         super().__init__()
+        self.setupUi(self)
         self.initUI()
 
     def initUI(self):
         self.setGeometry(300, 300, 600, 600)
         self.setWindowTitle('Yellow_Circles')
-        uic.loadUi('UI.ui', self)
         self.pushButton.clicked.connect(self.draw_ellipse)
 
     def draw_ellipse(self):
@@ -23,10 +23,10 @@ class Example(QWidget):
     def paintEvent(self, event):
         qp = QPainter()
         qp.begin(self)
-        qp.setBrush(QColor(255, 255, 0))
         for _ in range(randint(1, 4)):
+            qp.setBrush(QColor(*choices(range(0, 255), k=3)))
             color = randint(5, 100)
-            qp.drawEllipse(color, color, color, color)
+            qp.drawEllipse(color + 150, color + 150, color, color)
         qp.end()
 
 
